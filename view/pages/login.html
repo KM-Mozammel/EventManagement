@@ -1,9 +1,20 @@
 <div class="container">
     <div class="row justify-content-center">
+        <h2 class="text-center m-1">Event Management</h2>
+
+        <?php
+            if(isset($_GET['from'])){
+                $action = $_GET['from']; 
+                if($action == "logout"){
+                    echo "<div class='alert alert-success'>You have been logged out.</div>";
+                }
+            }
+        ?>
         <div class="col-md-6">  <div class="card login-container">
                 <div class="card-body">
-                    <h3 class="text-center mb-4">Event Management Login</h3>
-
+                    <div class="card-header text-center">
+                        <h4>Login</h4>
+                    </div>
                     <div id="errors" class="mb-3">  <?php if (isset($data['errors']) && !empty($data['errors'])): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <ul class="mb-0">  <?php foreach ($data['errors'] as $error): ?>
@@ -31,11 +42,6 @@
                                    name="password" id="password" required>
                             <?php if (isset($data['errors']['password'])): ?>
                                 <div class="invalid-feedback"><?php echo $data['errors']['password']; ?></div> <?php endif; ?>
-                        </div>
-
-                        <div class="mb-3 form-check">  <input type="checkbox" name="rememberMe" class="form-check-input" id="rememberMe"
-                                   <?php echo isset($data['oldData']['rememberMe']) && $data['oldData']['rememberMe'] ? 'checked' : ''; ?>>
-                            <label class="form-check-label" for="rememberMe">Remember Me</label>
                         </div>
 
                         <div class="d-grid gap-2">  <button type="submit" class="btn btn-primary">Login</button>

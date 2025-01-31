@@ -49,8 +49,10 @@ class RegistrationController extends Controller
         $result = $userRegistration->register($name, $email, $password, $role);
         
         if ($result != false) {
-            header("Location: index.php?section=login&action=default");
-            exit();
+            $view = new Template();
+            $msg['email']="Registration successful. Please login to continue.";
+            $view->view('pages/login', ['errors' => $msg, 'oldData' => $_POST]);
+            return;
         } else{
             $view = new Template();
             $view->view('pages/registration', ['errors' => $errors, 'oldData' => $_POST]);

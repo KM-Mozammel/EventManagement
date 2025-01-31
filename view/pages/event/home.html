@@ -1,0 +1,63 @@
+<?php
+    $events = [
+    [
+        'id' => 1,
+        'name' => 'Tech Conference',
+        'description' => 'A conference for tech enthusiasts.',
+        'max_capacity' => 200,
+        'date' => '2024-03-15' // Add a date for the event
+    ],
+    [
+        'id' => 2,
+        'name' => 'Music Festival',
+        'description' => 'A fun-filled music festival.',
+        'max_capacity' => 500,
+        'date' => '2024-04-20'
+    ],
+    [
+        'id' => 3,
+        'name' => 'Art Exhibition',
+        'description' => 'Showcasing local artists.',
+        'max_capacity' => 100,
+        'date' => '2024-05-10'
+    ]
+];
+?>
+
+<div class="container">
+    <div class="jumbotron">
+        <a href="index.php?section=dashboard&action=createEvent">Create Event</a>
+    </div>
+
+    <h2 class="m-3">Upcoming Events</h2>
+
+    <div class="row mt-3">
+        <?php if (!empty($events)) : ?>
+        <?php foreach ($events as $event) : ?>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <?php echo $event['name']; ?>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <?php echo $event['description']; ?>
+                    </p>
+                    <p>Capacity:
+                        <?php echo $event['max_capacity']; ?>
+                    </p>
+                    <a href="event_details.php?id=<?php echo $event['id']; ?>" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+        <?php else : ?>
+        <p>No events found.</p>
+        <?php endif; ?>
+    </div>
+
+</div>
+
+<?php // ... (Any other PHP code you need) ... ?>

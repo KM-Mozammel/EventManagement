@@ -1,4 +1,4 @@
-<!-- FileImport -->
+<!-- fileImport -->
 <?php
     define('ROOT_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
     define('VIEW_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR);
@@ -10,10 +10,10 @@
     require_once ROOT_PATH . 'source/DatabaseConnection.php';
 ?>
 
-<!-- Configuration -->
+<!-- configuration -->
 <?php DatabaseConnection::connect('localhost', 'event_management', 'root', ''); ?>
 
-<!-- Routing -->
+<!-- routing -->
 <?php
 
     $section = $_GET['section'] ?? $_POST['section'] ?? 'home';
@@ -34,9 +34,10 @@
         $login = new LoginController();
         $login->runAction($action);
 
-    } else{
-
+    } else if($section == 'logout'){
+        session_destroy();
+        header("location: index.php?section=login&from=logout");
+    }else{
         $view = new Template();
         $view->view("pages/status-pages/404", "emp");
-
     }

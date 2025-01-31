@@ -1,0 +1,76 @@
+<div class="main-content">
+  <h1>Welcome to the Event Management System</h1>
+  <p>Log in to explore upcoming events and manage your interactions.</p>
+  <p>Event management features are available for administrators.</p>
+  <a href="index.php?section=login&action=default">
+    <button class="login-now-button">Login Now</button>
+  </a>
+    
+
+  <div class="container mt-4">
+      <div class="row">
+          <div class="col-md-4 col-sm-6 mb-4">  <div class="card">
+                  <img src="https://source.unsplash.com/featured/?technology" class="card-img-top event-image" alt="Tech Conference">
+                  <div class="card-body">
+                      <h5 class="card-title">Tech Conference</h5>
+                      <p class="card-text">A conference for tech enthusiasts.</p>
+                      <a href="#" class="btn btn-primary">Learn More</a>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-4 col-sm-6 mb-4">  <div class="card">
+                  <img src="https://source.unsplash.com/featured/?music" class="card-img-top event-image" alt="Music Festival">
+                  <div class="card-body">
+                      <h5 class="card-title">Music Festival</h5>
+                      <p class="card-text">A fun-filled music festival.</p>
+                      <a href="#" class="btn btn-primary">Learn More</a>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-4 col-sm-6 mb-4">  <div class="card">
+                  <img src="https://source.unsplash.com/featured/?art" class="card-img-top event-image" alt="Art Exhibition">
+                  <div class="card-body">
+                      <h5 class="card-title">Art Exhibition</h5>
+                      <p class="card-text">Showcasing local artists.</p>
+                      <a href="#" class="btn btn-primary">Learn More</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<style>
+  .card {
+      margin-bottom: 20px;
+  }
+
+  .event-image {
+      object-fit: cover;
+      height: 150px;
+      width: 100%; 
+  }
+
+  .event-image {
+      background-color: #eee;
+  }
+
+  .event-image:not([src]):before {
+      content: "Image Not Available";
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #777; 
+  }
+
+  .login-now-button{
+    padding: 10px 20px;
+    background-color: skyblue;
+    border-radius: 20px;
+    border: none;
+  }
+
+</style>

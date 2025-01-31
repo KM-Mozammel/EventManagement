@@ -1,0 +1,27 @@
+<form method="post" action="index.php?section=dashboard&action=submitCreateEvent" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name">Event Name:</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="datetime">Date and Time:</label>
+        <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
+    </div>
+    <div class="form-group">
+        <label for="location">Location:</label>
+        <input type="text" class="form-control" id="location" name="location" required>
+    </div>
+    <div class="form-group">
+        <label for="capacity">Capacity:</label>
+        <input type="number" class="form-control" id="capacity" name="capacity" min="1" required>
+    </div>
+    <div class="form-group">
+        <label for="image">Image/Poster (Optional):</label>
+        <input type="file" class="form-control-file" id="image" name="image">
+    </div>
+    <button type="submit" class="btn btn-primary">Create Event</button>
+</form>

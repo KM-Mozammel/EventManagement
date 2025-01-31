@@ -21,35 +21,35 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header text-center">
-                    <h4>Create Event</h4>
+                    <h4>Edit Event</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="index.php?section=event&action=submitCreateEvent" enctype="multipart/form-data">
+                    <form method="post" action="index.php?section=event&action=submitEditEvent" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="name">Event Name:</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($data['name']); ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="description">Description:</label>
-                            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                            <textarea class="form-control" id="description" name="description" rows="3" required><?php echo htmlspecialchars($data['description']); ?></textarea>
                         </div>
                         <div class="form-group">
                             <label for="datetime">Date and Time:</label>
-                            <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
+                            <input type="datetime-local" class="form-control" id="datetime" name="datetime" value="<?php echo htmlspecialchars($data['datetime']); ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="location">Location:</label>
-                            <input type="text" class="form-control" id="location" name="location" required>
+                            <input type="text" class="form-control" id="location" name="location" value="<?php echo htmlspecialchars($data['location']); ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="capacity">Capacity:</label>
-                            <input type="number" class="form-control" id="capacity" name="capacity" min="1" required>
+                            <input type="number" class="form-control" id="capacity" name="capacity" value="<?php echo htmlspecialchars($data['max_capacity']); ?>" min="1" required>
                         </div>
                         <div class="form-group">
                             <label for="image">Image/Poster (Optional):</label>
                             <input type="file" class="form-control-file" id="image" name="image">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Create Event</button>
+                        <button type="submit" class="btn btn-primary w-100">Update Event</button>
                     </form>
                 </div>
             </div>

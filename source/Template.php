@@ -11,10 +11,7 @@ class Template{
 
     public function validateRole($role){
         if($_SESSION['role'] == 'admin'){
-            header("location: index.php?section=dashboard&action=default");
-            // $view = new Template();
-            // $view->authView("pages/event/home", "emp");
-            // return false;
+            header("location: index.php?section=event&action=default");
         }
         return true;
     }

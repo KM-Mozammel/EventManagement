@@ -4,7 +4,7 @@ class Controller {
         if(method_exists($this, $actionName)){
             $this->$actionName();
         } else {
-            include 'view/404.html';
+            include 'view/layout/default.html';
         }
     }
 }

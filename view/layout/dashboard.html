@@ -16,7 +16,7 @@
     integrity="sha384-BVYiiSIFeVB/EAKkE/astj7I5+PxC+Vsj/RauhRUCont/Buqokcw5qAbPdgypjm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
     integrity="sha384-rHyoN1iRuwJtpshRdiNJg/xV9IFuLap3UibFdVf02wg+xN9hE+Q/n9IC5wVvVap" crossorigin="anonymous">
-  <title>Responsive Navbar</title>
+  <title>Event Management</title>
   <style>
     * {
       margin: 0;
@@ -134,14 +134,14 @@
     <div class="logo" style="cursor: pointer;">
       Hello,
       <?php echo $_SESSION['username']; ?>
-      <p style="font-size: 16px; margin: 5px 0 0 0;"><?php echo $_SESSION['role']; ?></p>
+      <p style="font-size: 18px; margin: 5px 0 0 0;"><?php echo $_SESSION['role']; ?></p>
     </div>
 
     <nav class="nav">
       <ul class="nav-list">
-        <li><a href="index.php?section=dashboard">Home</a></li>
-        <li><a href="index.php?section=dashboard&action=manageEvent">Manage Event</a></li>
-        <li><a href="index.php?section=dashboard&action=createEvent">Create New</a></li>
+        <li><a href="index.php?section=event">Home</a></li>
+        <li><a href="index.php?section=event&action=manageEvent">Manage Event</a></li>
+        <li><a href="index.php?section=event&action=createEvent">Create New</a></li>
         <li><a style="color: blue;" href="index.php?section=logout">Log Out</a></li>
       </ul>
     </nav>

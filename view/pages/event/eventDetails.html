@@ -25,6 +25,10 @@
             <p class="card-text"><strong>Max Capacity:</strong>
                 <?php echo $data['max_capacity']; ?> attendees
             </p>
+            <p class="card-text"><strong>Already Joined:</strong>
+                <?php echo $data['registered_count']; ?> attendees
+            </p>
+
             <p class="card-text"><strong>Eventh Date:</strong>
                 <?php echo $data['event_date']; ?>
             </p>
@@ -32,12 +36,16 @@
                 <?php echo $data['created_at']; ?>
             </p>
 
+            <?php if ($data['registered_count'] < $data['max_capacity']) : ?>
             <?php if (!isset($_GET['from'])) : ?>
             <a class="btn btn-primary"
                 href="index.php?section=event&action=eventRegistration&eventId=<?php echo $data['id']; ?>">Join
                 Event</a>
             <?php else : ?>
             <a class="btn btn-secondary" href="index.php?section=event&action=viewAllRegisteredEvent">Back</a>
+            <?php endif; ?>
+            <?php else : ?>
+            <p class="text-danger"><strong>No Space Available</strong></p>
             <?php endif; ?>
         </div>
     </div>

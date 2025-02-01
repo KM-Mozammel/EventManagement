@@ -51,7 +51,10 @@ class EventModel
     public function getEventDetailsById($eventId)
     {
         try {
-            $query = "SELECT * FROM $this->table WHERE id = :id";
+            $query = "SELECT e.*, 
+                         (SELECT COUNT(*) FROM registrations r WHERE r.event_id = e.id) AS registered_count 
+                  FROM $this->table e 
+                  WHERE e.id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':id', $eventId, PDO::PARAM_INT);
             if ($stmt->execute()) {

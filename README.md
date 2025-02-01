@@ -55,6 +55,10 @@ Join to an event
 
 ![alt text](<join eventh.PNG>)
 
+No space left:
+
+![alt text](<no space.PNG>)
+
 Report of event:
 
 ![alt text](<report event.PNG>)

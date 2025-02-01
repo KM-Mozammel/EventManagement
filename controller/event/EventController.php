@@ -20,7 +20,7 @@ class DashboardController extends Controller
     {
         $take = isset($_GET['take']) ? intval($_GET['take']) : 10;
         $skip = isset($_GET['skip']) ? intval($_GET['skip']) : 0;
-        $latestEvents = $this->event->getLatestEventsByUserId($_SESSION['user_id'], $take, $skip);
+        $latestEvents = $this->event->getLatestEvents($take, $skip);
 
         if ($_SESSION['role'] == 'admin') {
             $this->view->authView('pages/event/home', $latestEvents);

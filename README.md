@@ -39,10 +39,26 @@ Manage Eventh:
 
 ![alt text](paginatio.PNG)
 
+Only admin can see the report button
+//user:
+![alt text](<no report.PNG>)
+
 Create new Event:
 
 ![alt text](<create eventh.PNG>)
 
+Edit Event:
+
+![alt text](<Edit event.PNG>)
+
 Join to an event
 
 ![alt text](<join eventh.PNG>)
+
+Report of event:
+
+![alt text](<report event.PNG>)
+
+CSV REPORT:
+
+![alt text](<csv report.PNG>)

@@ -155,12 +155,11 @@ class EventModel
         }
     }
 
-    public function getLatestEventsByUserId($userId, $take, $skip)
+    public function getLatestEvents($take, $skip)
     {
         try {
-            $query = "SELECT * FROM $this->table WHERE created_by = :user_id ORDER BY created_at DESC LIMIT :take OFFSET :skip";
+            $query = "SELECT * FROM $this->table ORDER BY created_at DESC LIMIT :take OFFSET :skip";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
             $stmt->bindValue(':take', $take, PDO::PARAM_INT);
             $stmt->bindValue(':skip', $skip, PDO::PARAM_INT);
             if ($stmt->execute()) {
@@ -268,20 +267,21 @@ class EventModel
                     e.location, 
                     e.max_capacity, 
                     u.username AS creator_username, 
-                    r.user_id AS attendee_id,
-                    reg_user.username AS attendee_username,
-                    r.registration_date
+                    GROUP_CONCAT(r.user_id SEPARATOR ' ') AS attendee_ids,
+                    GROUP_CONCAT(reg_user.username SEPARATOR ', ') AS attendee_usernames,
+                    GROUP_CONCAT(r.registration_date SEPARATOR '; ') AS registration_dates
                   FROM $this->table e
                   JOIN users u ON e.created_by = u.id
                   LEFT JOIN registrations r ON e.id = r.event_id
                   LEFT JOIN users reg_user ON r.user_id = reg_user.id
-                  WHERE e.id = :id";
+                  WHERE e.id = :id
+                  GROUP BY e.id, e.name, e.description, e.event_date, e.location, e.max_capacity, u.username";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':id', $eventId, PDO::PARAM_INT);
 
             if ($stmt->execute()) {
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $stmt->fetch(PDO::FETCH_ASSOC);
             } else {
                 $errorInfo = $stmt->errorInfo();
                 error_log("Error getting event details for report: " . print_r($errorInfo, true));
@@ -313,18 +313,24 @@ class EventModel
         $output = fopen("php://output", "w");
         fputcsv($output, array('Event ID', 'Event Name', 'Description', 'Event Date', 'Location', 'Max Capacity', 'Creator Username', 'Attendee ID', 'Attendee Username', 'Registration Date'));
 
-        foreach ($eventDetails as $row) {
+        // Split concatenated values
+        $attendee_ids = explode(' ', $eventDetails['attendee_ids']);
+        $attendee_usernames = explode(' ', $eventDetails['attendee_usernames']);
+        $registration_dates = explode(' ', $eventDetails['registration_dates']);
+
+        // Write each attendee's details to the CSV
+        for ($i = 0; $i < count($attendee_ids); $i++) {
             fputcsv($output, array(
-                $row['id'],
-                $row['event_name'],
-                $row['description'],
-                $row['event_date'],
-                $row['location'],
-                $row['max_capacity'],
-                $row['creator_username'],
-                $row['attendee_id'],
-                $row['attendee_username'],
-                $row['registration_date']
+                $eventDetails['id'],
+                $eventDetails['event_name'],
+                $eventDetails['description'],
+                $eventDetails['event_date'],
+                $eventDetails['location'],
+                $eventDetails['max_capacity'],
+                $eventDetails['creator_username'],
+                $attendee_ids[$i],
+                $attendee_usernames[$i],
+                $registration_dates[$i]
             ));
         }
 

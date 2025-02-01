@@ -24,7 +24,7 @@
         </div>
         <div class="card-body">
             <?php if (!empty($data)) : ?>
-            <?php $eventDetails = $data[0]; ?>
+            <?php $eventDetails = $data; ?>
             <table class="table table-bordered">
                 <tr>
                     <th>Event Name</th>
@@ -65,19 +65,19 @@
                 <tr>
                     <th>Attendee ID</th>
                     <td>
-                        <?= htmlspecialchars($eventDetails['attendee_id']) ?>
+                        <?= htmlspecialchars($eventDetails['attendee_ids']) ?>
                     </td>
                 </tr>
                 <tr>
                     <th>Attendee Username</th>
                     <td>
-                        <?= htmlspecialchars($eventDetails['attendee_username']) ?>
+                        <?= htmlspecialchars($eventDetails['attendee_usernames']) ?>
                     </td>
                 </tr>
                 <tr>
                     <th>Registration Date</th>
                     <td>
-                        <?= htmlspecialchars($eventDetails['registration_date']) ?>
+                        <?= htmlspecialchars($eventDetails['registration_dates']) ?>
                     </td>
                 </tr>
             </table>

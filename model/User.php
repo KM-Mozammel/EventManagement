@@ -9,18 +9,20 @@ class UserModel
         $this->conn = $dbc;
     }
 
-    public function register($name, $email, $password, $role = 'user') { // Added default role
+    public function register($name, $email, $password, $role = 'user')
+    {
         try {
             $query = "INSERT INTO " . $this->table . " (username, password, email, role) VALUES (:name, :password, :email, :role)";
             $stmt = $this->conn->prepare($query);
-    
+
             if ($stmt) {
                 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
                 $stmt->bindValue(':email', $email, PDO::PARAM_STR);
                 $stmt->bindValue(':password', $password, PDO::PARAM_STR);
                 $stmt->bindValue(':role', $role, PDO::PARAM_STR);
-    
+
                 if ($stmt->execute()) {
+                    $stmt->closeCursor();
                     return true;
                 } else {
                     $errorInfo = $stmt->errorInfo();
@@ -32,7 +34,6 @@ class UserModel
                 error_log("Error preparing statement: " . $errorInfo[2]);
                 return false;
             }
-            if ($stmt) { $stmt->closeCursor(); }
         } catch (PDOException $e) {
             error_log("Database error during registration: " . $e->getMessage());
             return false;

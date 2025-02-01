@@ -1,0 +1,94 @@
+<style>
+    .container {
+        margin-top: 50px;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .table th,
+    .table td {
+        vertical-align: middle;
+    }
+</style>
+<div class="container mt-0">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2>Event Report</h2>
+        </div>
+        <div class="card-body">
+            <?php if (!empty($data)) : ?>
+            <?php $eventDetails = $data[0]; ?>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Event Name</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['event_name']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['description']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Event Date</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['event_date']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Location</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['location']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Max Capacity</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['max_capacity']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Creator Username</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['creator_username']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Attendee ID</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['attendee_id']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Attendee Username</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['attendee_username']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Registration Date</th>
+                    <td>
+                        <?= htmlspecialchars($eventDetails['registration_date']) ?>
+                    </td>
+                </tr>
+            </table>
+
+            <a href='index.php?section=event&action=downloadEventReport&eventId=<?php echo $eventDetails['id']; ?>'>
+                <button  class="btn btn-success mt-3">Download CSV</button>
+            </a>
+
+            <?php else : ?>
+            <p>No event details found.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

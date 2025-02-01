@@ -1,3 +1,10 @@
+<?php
+  if (isset($_SESSION['user_id'])) {
+      header("Location: index.php?section=event");
+      exit();
+  }
+?>
+
 <div class="main-content">
   <h1>Welcome to the Event Management System</h1>
   <p>Log in to explore upcoming events and manage your interactions.</p>

@@ -131,18 +131,34 @@ class DashboardController extends Controller
         }
     }
 
-    public function eventhRegistration()
+    public function eventRegistration()
     {
         $eventId = $_GET['eventId'];
         if (!empty($eventId)) {
-            $result = $this->event->eventhRegistration($eventId, $_SESSION['user_id']);
+            $result = $this->event->eventRegistration($eventId, $_SESSION['user_id']);
             if($result){
                 $this->view->authView('pages/event/registrationSuccess', "");
             } else {
-                echo "Error registering for event.";
+                echo "You are already in this event, go back to <a href='index.php?section=event&action=default'>Dashboard</a>";
             }
         } else {
             echo "Event not found.";
         }
+    }
+
+    public function reportGenerator(){
+        $eventId = $_GET['eventId'];
+        if (!empty($eventId)) {
+            $eventDetails = $this->event->getEventDetailsForReportById($eventId);
+            $this->view->authView('pages/event/reportGenerator', $eventDetails);
+        } else {
+            echo "Event not found.";
+        }
+    }
+
+    public function downloadEventReport(){
+        $eventId = $_GET['eventId'];
+        $eventDetails = $this->event->downloadEventReport($eventId);
+        $this->view->authView('pages/event/reportGenerator', $eventDetails);
     }
 }

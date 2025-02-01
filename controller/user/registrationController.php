@@ -44,7 +44,7 @@ class RegistrationController extends Controller
         $name = trim($_POST['name']);
         $email = trim($_POST['email']);
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $role = "Admin";
+        $role = "user";
         $userRegistration = new UserModel($this->dbc);
         $result = $userRegistration->register($name, $email, $password, $role);
         

@@ -12,9 +12,11 @@
             <h2 class="card-title text-primary"><?php echo htmlspecialchars($data['name']); ?></h2>
             <p class="card-text text-muted"><strong>data ID:</strong> <?php echo $data['id']; ?></p>
             <p class="card-text"><strong>Description:</strong> <?php echo htmlspecialchars($data['description']); ?></p>
+            <p class="card-text"><strong>Location:</strong> <?php echo htmlspecialchars($data['location']); ?></p>
             <p class="card-text"><strong>Max Capacity:</strong> <?php echo $data['max_capacity']; ?> attendees</p>
+            <p class="card-text"><strong>Eventh Date:</strong> <?php echo $data['event_date']; ?></p>
             <p class="card-text text-secondary"><strong>Created At:</strong> <?php echo $data['created_at']; ?></p>
-            <a class="btn btn-primary" href="index.php?section=event&action=eventhRegistration&eventId=<?php echo $data['id']; ?>">Join Event</a>
+            <a class="btn btn-primary" href="index.php?section=event&action=eventRegistration&eventId=<?php echo $data['id']; ?>">Join Event</a>
         </div>
     </div>
 </div>

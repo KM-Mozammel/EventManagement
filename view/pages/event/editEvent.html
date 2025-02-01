@@ -1,3 +1,10 @@
+<?php
+    if (!isset($data) || empty($data)) {
+        header("Location: index.php?section=event&action=default");
+        exit();
+    }
+?>
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
     .container {
@@ -24,7 +31,7 @@
                     <h4>Edit Event</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="index.php?section=event&action=submitEditEvent" enctype="multipart/form-data">
+                    <form method="post" action="index.php?section=event&action=submitEditEvent&id=<?php echo $data['id']; ?>" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="name">Event Name:</label>
                             <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($data['name']); ?>" required>
@@ -35,7 +42,7 @@
                         </div>
                         <div class="form-group">
                             <label for="datetime">Date and Time:</label>
-                            <input type="datetime-local" class="form-control" id="datetime" name="datetime" value="<?php echo htmlspecialchars($data['datetime']); ?>" required>
+                            <input type="datetime-local" class="form-control" id="datetime" name="datetime" value="<?php echo htmlspecialchars($data['event_date']); ?>T14:31" required>
                         </div>
                         <div class="form-group">
                             <label for="location">Location:</label>

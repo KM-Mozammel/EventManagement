@@ -13,7 +13,36 @@ It's an event manageent projct.
 1. Clone the repository:
     git clone https://github.com/KM-Mozammel/EventManagement.git
 
+Index page/
 
-![alt text](image.png)
+![alt text](index.PNG)
 
-![alt text](image-1.png)
+Login:
+
+![alt text](login.PNG)
+
+Registration:
+
+![alt text](registration.PNG)
+
+After Login user will redirect here in the dashboard :
+
+![alt text](dashboard.PNG)
+
+Registered event:
+
+![alt text](<registered eventh.PNG>)
+
+Manage Eventh:
+
+![alt text](<Manage event.PNG>)
+
+![alt text](paginatio.PNG)
+
+Create new Event:
+
+![alt text](<create eventh.PNG>)
+
+Join to an event
+
+![alt text](<join eventh.PNG>)

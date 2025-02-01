@@ -86,12 +86,83 @@ class EventModel
         }
     }
 
-    public function getLatestEventsByUserId($userId)
+    public function getEvents($take, $skip)
     {
         try {
-            $query = "SELECT * FROM $this->table WHERE created_by = :user_id ORDER BY created_at DESC LIMIT 6";
+            $query = "SELECT * FROM events ORDER BY created_at DESC LIMIT :take OFFSET :skip";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':take', $take, PDO::PARAM_INT);
+            $stmt->bindValue(':skip', $skip, PDO::PARAM_INT);
+            if ($stmt->execute()) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $errorInfo = $stmt->errorInfo();
+                error_log("Error getting latest events: " . print_r($errorInfo, true));
+                return ['status' => 'error', 'message' => 'Database error: ' . $errorInfo[2]];
+            }
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getRegisteredEventsByUserIdPaged($userId, $take, $skip)
+    {
+        try {
+            $query = "SELECT e.id, e.name, e.description, e.event_date, e.location, e.max_capacity, u.username AS creator_username
+                  FROM $this->table e
+                  JOIN users u ON e.created_by = u.id
+                  JOIN registrations r ON e.id = r.event_id
+                  WHERE r.user_id = :user_id
+                  ORDER BY e.created_at DESC LIMIT :take OFFSET :skip";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':take', $take, PDO::PARAM_INT);
+            $stmt->bindValue(':skip', $skip, PDO::PARAM_INT);
+            if ($stmt->execute()) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $errorInfo = $stmt->errorInfo();
+                error_log("Error getting registered events: " . print_r($errorInfo, true));
+                return ['status' => 'error', 'message' => 'Database error: ' . $errorInfo[2]];
+            }
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
+    public function getRegisteredEventsByUserId($userId)
+    { {
+            try {
+                $query = "SELECT e.id, e.name, e.description, e.event_date, e.location, e.max_capacity, u.username AS creator_username
+                  FROM $this->table e
+                  JOIN users u ON e.created_by = u.id
+                  JOIN registrations r ON e.id = r.event_id
+                  WHERE r.user_id = :user_id";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+                if ($stmt->execute()) {
+                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                } else {
+                    $errorInfo = $stmt->errorInfo();
+                    error_log("Error getting registered events: " . print_r($errorInfo, true));
+                    return ['status' => 'error', 'message' => 'Database error: ' . $errorInfo[2]];
+                }
+            } catch (PDOException $e) {
+                error_log("Database error: " . $e->getMessage());
+                return false;
+            }
+        }
+    }
+
+    public function getLatestEventsByUserId($userId, $take, $skip)
+    {
+        try {
+            $query = "SELECT * FROM $this->table WHERE created_by = :user_id ORDER BY created_at DESC LIMIT :take OFFSET :skip";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':take', $take, PDO::PARAM_INT);
+            $stmt->bindValue(':skip', $skip, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             } else {
@@ -111,16 +182,22 @@ class EventModel
             $name = htmlspecialchars($formData['name'], ENT_QUOTES, 'UTF-8');
             $description = htmlspecialchars($formData['description'], ENT_QUOTES, 'UTF-8');
             $max_capacity = intval($formData['capacity']);
-            $eventId = intval($formData['eventId']);
+            $datetime = htmlspecialchars($formData['datetime'], ENT_QUOTES, 'UTF-8');
+            $location = htmlspecialchars($formData['location'], ENT_QUOTES, 'UTF-8');
+            $eventId = intval($formData['id']);
 
-            $query = "UPDATE $this->table SET name = :name, description = :description, max_capacity = :max_capacity WHERE id = :id";
+            // Convert datetime to date format if necessary
+            $event_date = date('Y-m-d', strtotime($datetime));
+
+            $query = "UPDATE events SET name = :name, description = :description, max_capacity = :max_capacity, event_date = :event_date, location = :location WHERE id = :id";
             $stmt = $this->conn->prepare($query);
 
             if ($stmt) {
-
                 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
                 $stmt->bindValue(':description', $description, PDO::PARAM_STR);
                 $stmt->bindValue(':max_capacity', $max_capacity, PDO::PARAM_INT);
+                $stmt->bindValue(':event_date', $event_date, PDO::PARAM_STR);
+                $stmt->bindValue(':location', $location, PDO::PARAM_STR);
                 $stmt->bindValue(':id', $eventId, PDO::PARAM_INT);
 
                 if ($stmt->execute()) {
@@ -131,13 +208,11 @@ class EventModel
                     return ['status' => 'error', 'message' => 'Database error: ' . $errorInfo[2]];
                 }
             } else {
-
                 $errorInfo = $this->conn->errorInfo();
                 error_log("Error preparing statement: " . print_r($errorInfo, true));
                 return false;
             }
         } catch (PDOException $e) {
-
             error_log("Database error: " . $e->getMessage());
             return false;
         }

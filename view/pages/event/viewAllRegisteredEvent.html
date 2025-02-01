@@ -1,5 +1,5 @@
 <div class="container" id="container">
-    <h2 class="text-center m-3">Latest Events</h2>
+    <h2 class="text-center m-3">Registered Events</h2>
     <div class="search-bar">
         <input type="text" id="searchInput" class="form-control" placeholder="Search by event name...">
         <select id="sortDropdown" class="form-control w-auto ml-2">
@@ -33,7 +33,7 @@
                     <p><strong>Happens Date:</strong>
                         <?php echo htmlspecialchars($event['event_date']); ?>
                     </p>
-                    <a href="index.php?section=event&action=viewEvent&eventId=<?php echo $event['id']; ?>"
+                    <a href="index.php?section=event&action=viewEvent&from=view&eventId=<?php echo $event['id']; ?>"
                         class="btn btn-primary">View Details</a>
                 </div>
             </div>
@@ -91,7 +91,7 @@
             skip += take;
             $('#loader').show();
             $.ajax({
-                url: `index.php?section=event&action=getEvents&take=${take}&skip=${skip}`,
+                url: `index.php?section=event&action=viewAllRegisteredEventPaged&take=${take}&skip=${skip}`,
                 type: 'GET',
                 data: {
                     take: take,

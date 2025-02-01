@@ -19,28 +19,43 @@
                 <tbody>
                     <?php foreach ($data as $event): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($event['id']); ?></td>
-                        <td><?php echo htmlspecialchars($event['name']); ?></td>
-                        <td><?php echo htmlspecialchars($event['description']); ?></td>
-                        <td><?php echo htmlspecialchars($event['max_capacity']); ?></td>
-                        <td><?php echo htmlspecialchars($event['event_date']); ?></td>
-                        <td><?php echo htmlspecialchars($event['created_by']); ?></td>
-                        <td><?php echo htmlspecialchars($event['created_at']); ?></td>
                         <td>
-                            <a href="index.php?section=event&action=editEvent&eventId=<?php echo $event['id']; ?>" 
-                               class="btn btn-sm btn-warning">
+                            <?php echo htmlspecialchars($event['id']); ?>
+                        </td>
+                        <td>
+                            <?php echo htmlspecialchars($event['name']); ?>
+                        </td>
+                        <td>
+                            <?php echo htmlspecialchars($event['description']); ?>
+                        </td>
+                        <td>
+                            <?php echo htmlspecialchars($event['max_capacity']); ?>
+                        </td>
+                        <td>
+                            <?php echo htmlspecialchars($event['event_date']); ?>
+                        </td>
+                        <td>
+                            <?php echo htmlspecialchars($event['created_by']); ?>
+                        </td>
+                        <td>
+                            <?php echo htmlspecialchars($event['created_at']); ?>
+                        </td>
+                        <td class="d-flex flex-column gap-1">
+                            <a href="index.php?section=event&action=editEvent&eventId=<?php echo $event['id']; ?>"
+                                class="btn btn-sm btn-warning">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <a href="index.php?section=event&action=deleteEvent&eventId=<?php echo $event['id']; ?>" 
-                               class="btn btn-sm btn-danger"
-                               onclick="return confirm('Are you sure you want to delete this event?');">
+                            <a href="index.php?section=event&action=deleteEvent&eventId=<?php echo $event['id']; ?>"
+                                class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this event?');">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </a>
-
-                            <a href="index.php?section=event&action=reportGenerator&eventId=<?php echo $event['id']; ?>" 
-                                class="btn btn-sm btn-success">
-                                 <i class="fas fa-edit"></i> Report
-                             </a>
+                            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') : ?>
+                                <a href="index.php?section=event&action=reportGenerator&eventId=<?php echo $event['id']; ?>"
+                                    class="btn btn-sm btn-success">
+                                    <i class="fas fa-edit"></i> Show Report
+                                </a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>

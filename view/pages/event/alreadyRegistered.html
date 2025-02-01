@@ -1,15 +1,9 @@
-<?php
-    if (!isset($_SESSION['role'])) {
-        sleep(2);
-        header('Location: index.php?section=login');
-        exit();
-    }
-?>
-
 <div class="container">
     <div class="content">
-        <h1>Registration Successfull</h1>
-        <a href="index.php?section=event&action=viewAllRegisteredEvent" class="btn btn-primary mt-3">Go To Dashboard</a>
+        <h1>Already Registered</h1>
+        <p class="mt-3">It looks like you have already registered for this event. We are excited to have you join us!</p>
+        <p>If you need to make any changes to your registration or have any questions, please contact our support team.</p>
+        <a href="index.php?section=event" class="btn btn-primary mt-3">Go To Dashboard</a>
     </div>
 </div>
 

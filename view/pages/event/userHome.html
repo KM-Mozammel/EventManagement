@@ -1,60 +1,40 @@
-<?php
-    $events = [
-    [
-        'id' => 1,
-        'name' => 'Tech Conference',
-        'description' => 'A conference for tech enthusiasts.',
-        'max_capacity' => 200,
-        'date' => '2024-03-15' // Add a date for the event
-    ],
-    [
-        'id' => 2,
-        'name' => 'Music Festival',
-        'description' => 'A fun-filled music festival.',
-        'max_capacity' => 500,
-        'date' => '2024-04-20'
-    ],
-    [
-        'id' => 3,
-        'name' => 'Art Exhibition',
-        'description' => 'Showcasing local artists.',
-        'max_capacity' => 100,
-        'date' => '2024-05-10'
-    ]
-];
-?>
-
-<div class="container">
-    <div class="jumbotron">
-        <h1>Welcome,
-            <?php echo $_SESSION['username']; ?>!
-        </h1>
-        <p>You are logged in as a
-            <?php echo $_SESSION['role']; ?>.
-        </p>
-        <a href="index.php?section=event&action=createEvent">Create Event</a>
+<div class="container" id="container">
+    <h2 class="text-center m-3">Latest Events</h2>
+    <div class="search-bar">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by event name...">
+        <select id="sortDropdown" class="form-control w-auto ml-2">
+            <option value="latest">Sort by Latest</option>
+            <option value="oldest">Sort by Oldest</option>
+        </select>
     </div>
-
-    <h2 class="m-3">Upcoming Events</h2>
-
-    <div class="row mt-3">
-        <?php if (!empty($events)) : ?>
-        <?php foreach ($events as $event) : ?>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <?php echo $event['name']; ?>
+    <div class="row" id="eventsContainer">
+        <?php if (!empty($data)) : ?>
+        <?php foreach ($data as $event) : ?>
+        <div class="col-md-4 mb-4 event-card" data-date="<?php echo $event['event_date']; ?>">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <?php echo htmlspecialchars($event['name']); ?>
                     </h3>
                 </div>
-                <div class="panel-body">
-                    <p>
-                        <?php echo $event['description']; ?>
+                <div class="card-body">
+                    <p class="event-description">
+                        <?php 
+                                $description = htmlspecialchars($event['description']);
+                                echo strlen($description) > 80 ? substr($description, 0, 80) . '...' : $description; 
+                            ?>
                     </p>
-                    <p>Capacity:
-                        <?php echo $event['max_capacity']; ?>
+                    <p><strong>Capacity:</strong>
+                        <?php echo htmlspecialchars($event['max_capacity']); ?>
                     </p>
-                    <a href="event_details.php?id=<?php echo $event['id']; ?>" class="btn btn-primary">View Details</a>
+                    <p><strong>Location:</strong>
+                        <?php echo htmlspecialchars($event['location']); ?>
+                    </p>
+                    <p><strong>Happens Date:</strong>
+                        <?php echo htmlspecialchars($event['event_date']); ?>
+                    </p>
+                    <a href="index.php?section=event&action=viewEvent&eventId=<?php echo $event['id']; ?>"
+                        class="btn btn-primary">View Details</a>
                 </div>
             </div>
         </div>
@@ -63,7 +43,135 @@
         <p>No events found.</p>
         <?php endif; ?>
     </div>
-
 </div>
 
-<?php // ... (Any other PHP code you need) ... ?>
+<?php if (!empty($data)) : ?>
+    <div class="see-more">
+        <div class="loader" id="loader"></div>
+        <button id="seeMoreBtn" class="btn btn-secondary">See More</button>
+    </div>
+<?php endif; ?>
+
+<script>
+    $(document).ready(function () {
+        $('#searchInput').on('keyup', function () {
+            var searchQuery = $(this).val().toLowerCase();
+            $('.event-card').each(function () {
+                var eventName = $(this).find('.card-title').text().toLowerCase();
+                if (eventName.includes(searchQuery)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+
+        $('#sortDropdown').on('change', function () {
+            var sortOrder = $(this).val();
+            var events = $('.event-card').toArray();
+
+            events.sort(function (a, b) {
+                var dateA = new Date($(a).data('date'));
+                var dateB = new Date($(b).data('date'));
+
+                if (sortOrder === 'latest') {
+                    return dateB - dateA;
+                } else {
+                    return dateA - dateB;
+                }
+            });
+
+            $('#eventsContainer').html(events);
+        });
+
+
+        var take = 10;
+        var skip = 0;
+        $('#seeMoreBtn').on('click', function () {
+            skip += take;
+            $('#loader').show();
+            $.ajax({
+                url: `index.php?section=event&action=getEvents&take=${take}&skip=${skip}`,
+                type: 'GET',
+                data: {
+                    take: take,
+                    skip: skip
+                },
+                success: function (response) {
+                    $('#eventsContainer').append(response);
+                    $('#loader').hide();
+                },
+                error: function () {
+                    alert('Failed to load more events.');
+                    $('#loader').hide();
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .container {
+        margin-top: 20px;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .card-body {
+        background-color: #f8f9fa;
+    }
+
+    .search-bar {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .event-description {
+        padding: 10px 20px;
+        background-color: rgba(154, 139, 168, 0.13);
+        border-radius: 5px;
+    }
+
+    .see-more {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .loader {
+        display: none;
+        border: 4px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 4px solid #007bff;
+        width: 80px;
+        height: 80px;
+        animation: spin 2s linear infinite;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
